@@ -59,12 +59,15 @@ jobs:
         msystem: MSYS
         update: true
         install: >-
+          base-devel
           git
           make
-        pacboy: >-
-          toolchain:p
-          cmake:p
-          ninja:p
+          mingw-w64-x86_64-toolchain
+          mingw-w64-x86_64-cmake
+        # pacboy: >-
+        #   toolchain:p
+        #   cmake:p
+        #   ninja:p
 
     - uses: actions/checkout@v3
 

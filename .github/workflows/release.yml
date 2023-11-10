@@ -66,6 +66,15 @@ jobs:
       run: |
         echo "const char *gitversion = \"$(git rev-parse HEAD)\";" > "${{ github.workspace }}/git_version.h"
 
+    - name: Configure package on Windows
+      uses: msys2/setup-msys2@v2
+      if: runner.os == 'Windows'
+      with:
+        update: true
+        install: >-
+          cmake
+          gcc
+
     - name: Add mingw64 to PATH on Windows
       shell: pwsh
       if: runner.os == 'Windows'

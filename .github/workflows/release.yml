@@ -52,6 +52,20 @@ jobs:
         #    c_compiler: cl
 
     steps:
+    - name: Configure package on Windows
+      uses: msys2/setup-msys2@v2
+      if: runner.os == 'Windows'
+      with:
+        msystem: MSYS
+        update: true
+        install: >-
+          git
+          make
+        pacboy: >-
+          toolchain:p
+          cmake:p
+          ninja:p
+
     - uses: actions/checkout@v3
 
     - name: Set reusable strings
@@ -66,17 +80,6 @@ jobs:
       run: |
         echo "const char *gitversion = \"$(git rev-parse HEAD)\";" > "${{ github.workspace }}/git_version.h"
 
-    - name: Configure package on Windows
-      uses: msys2/setup-msys2@v2
-      if: runner.os == 'Windows'
-      with:
-        msystem: MSYS
-        update: true
-        install: >-
-          cmake
-          make
-          gcc
-
     - name: Add mingw64 to PATH on Windows
       shell: pwsh
       if: runner.os == 'Windows'
@@ -84,7 +87,7 @@ jobs:
         echo "C:\msys64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         ls -R C:\msys64
         which cmake
-        which msys2
+        # which msys2
 
     - name: Install libpcap on Linux
       shell: bash

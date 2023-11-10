@@ -73,6 +73,7 @@ jobs:
         update: true
         install: >-
           cmake
+          make
           gcc
 
     - name: Add mingw64 to PATH on Windows

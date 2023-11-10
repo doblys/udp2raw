@@ -87,8 +87,8 @@ jobs:
       shell: pwsh
       if: runner.os == 'Windows'
       run: |
-        echo "C:\msys64" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-        ls -R C:\msys64
+        echo "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+        # ls -R C:\msys64
         which cmake
         # which msys2
 

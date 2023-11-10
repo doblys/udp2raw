@@ -70,6 +70,7 @@ jobs:
       uses: msys2/setup-msys2@v2
       if: runner.os == 'Windows'
       with:
+        msystem: MSYS
         update: true
         install: >-
           cmake

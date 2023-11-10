@@ -28,7 +28,7 @@ jobs:
       matrix:
         sys:
           - { os: ubuntu-latest, shell: bash }
-          - { os: windows-latest, shell: 'mysys2 {0}' }
+          - { os: windows-latest, shell: 'msys2 {0}' }
           - { os: macos-latest, shell: bash }
         build_type: [Release]
         # c_compiler: [gcc, clang, cl]

@@ -36,7 +36,7 @@ const int is_udp2raw_mp = 1;
 #if !defined(__CYGWIN__) && !defined(__MINGW32__)
 #include <pcap.h>
 #else
-#include <pcap_wrapper.h>
+#include "pcap_wrapper.h"
 #define NO_LIBNET
 #endif
 
@@ -59,7 +59,7 @@ const int is_udp2raw_mp = 0;
 #endif
 
 #if !defined(NO_LIBEV_EMBED)
-#include <my_ev.h>
+#include "my_ev.h"
 #else
 #include "ev.h"
 #endif

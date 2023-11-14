@@ -1,0 +1,3 @@
+// configured options and settings
+
+#define UDP2RAW_GIT_VERSION "@REVISION@"

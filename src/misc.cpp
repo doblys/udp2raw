@@ -4,7 +4,7 @@
  *  Created on: Sep 23, 2017
  *      Author: root
  */
-#include "git_version.h"
+#include "version.h"
 #include "common.h"
 #include "encrypt.h"
 #include "misc.h"
@@ -120,10 +120,8 @@ int process_lower_level_arg()  // handle --lower-level option
 }
 #endif
 void print_help() {
-    char git_version_buf[100] = {0};
-    strncpy(git_version_buf, gitversion, 10);
     printf("udp2raw-tunnel\n");
-    printf("git version:%s    ", git_version_buf);
+    printf("git version:%s    ", UDP2RAW_GIT_VERSION);
     printf("build date:%s %s\n", __DATE__, __TIME__);
     printf("repository: https://github.com/wangyu-/udp2raw-tunnel\n");
     printf("\n");

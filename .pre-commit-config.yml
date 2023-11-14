@@ -1,0 +1,27 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+    - id: check-merge-conflict
+    - id: check-xml
+    - id: check-yaml
+    - id: check-json
+    - id: end-of-file-fixer
+    - id: fix-byte-order-marker
+    - id: trailing-whitespace
+    - id: check-executables-have-shebangs
+    - id: check-shebang-scripts-are-executable
+
+-   repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.13
+    hooks:
+    - id: cmake-format
+
+-   repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.16
+    hooks:
+    - id: mdformat
+      args: [--wrap=120]
+      additional_dependencies:
+      - mdformat-myst
+      - mdformat-tables

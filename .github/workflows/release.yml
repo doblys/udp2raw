@@ -3,6 +3,10 @@
 name: CMake on multiple platforms
 
 on:
+  # schedules the job to run at 00:00 every Saturday
+  schedule:
+    - cron: '0 0 * * SAT' # This line schedules the job to run at 00:00 every Saturday
+  workflow_dispatch:
   push:
     branches: [ "pkg" ]
   pull_request:
@@ -140,3 +144,44 @@ jobs:
         name: "${{ steps.get_basename.outputs.pkg_basename }}"
         # A file, directory or wildcard pattern that describes what to upload
         path: "${{ steps.strings.outputs.build-output-dir }}/${{ steps.get_basename.outputs.pkg_basename }}"
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    # only runs when the schedule or workflow_dispatch is triggered
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Source Code Archive
+        run: |
+          tar -czvf source-code.tar.gz .
+          zip -r source-code.zip .
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This line gets the GITHUB_TOKEN secret
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        id: upload-release-assets
+        run: |
+          for file in ./package-*/xxx-*-*.tar.gz ./source-code.tar.gz ./source-code.zip; do
+            echo "Uploading $file"
+            curl \
+              --data-binary @"$file" \
+              -H "Content-Type: application/gzip" \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "${{ steps.create_release.outputs.upload_url }}/assets?name=$(basename $file)"
+          done

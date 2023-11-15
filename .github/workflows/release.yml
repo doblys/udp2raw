@@ -166,11 +166,11 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
-          path: "${RELEASE_DIR}"
+          path: "${{ env.RELEASE_DIR }}"
 
       - name: Display package files
         run: |
-          ls -l *.tar.gz *.zip
+          ls -l "${RELEASE_DIR}"
 
       - name: Release
         uses: softprops/action-gh-release@v1

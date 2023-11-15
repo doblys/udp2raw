@@ -171,10 +171,11 @@ jobs:
 
       - name: Display package files
         run: |
-          ls -l "${RELEASE_DIR}"
+          ls -Rl "${RELEASE_DIR}"
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ${{ env.RELEASE_DIR }}/*
+            ${{ env.RELEASE_DIR }}/source-code.*
+            ${{ env.RELEASE_DIR }}/*/*.tar.gz

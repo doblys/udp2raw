@@ -157,8 +157,8 @@ jobs:
 
       - name: Create Source Code Archive
         run: |
-          tar -czvf source-code.tar.gz .
-          zip -r source-code.zip .
+          git archive --format=tgz -o source-code.tar.gz $GITHUB_REF_NAME
+          git archive --format=zip -o source-code.tar.gz $GITHUB_REF_NAME
 
       - name: Download Artifacts
         uses: actions/download-artifact@v2

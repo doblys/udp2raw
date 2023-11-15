@@ -146,6 +146,8 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      RELEASE_DIR: release
 
     # only runs when the schedule or workflow_dispatch is triggered
     if: |
@@ -157,11 +159,13 @@ jobs:
 
       - name: Create Source Code Archive
         run: |
-          git archive --format=tgz -o source-code.tar.gz $GITHUB_REF_NAME
-          git archive --format=zip -o source-code.zip $GITHUB_REF_NAME
+          git archive --format=tgz -o "${RELEASE_DIR}/source-code.tar.gz" $GITHUB_REF_NAME
+          git archive --format=zip -o "${RELEASE_DIR}/source-code.zip" $GITHUB_REF_NAME
 
       - name: Download Artifacts
         uses: actions/download-artifact@v3
+        with:
+          path: "${RELEASE_DIR}"
 
       - name: Display package files
         run: |
@@ -171,6 +175,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            *-*-*-*.tar.gz
-            code-source.tar.gz
-            code-source.zip
+            "${{ env.RELEASE_DIR }}/*"

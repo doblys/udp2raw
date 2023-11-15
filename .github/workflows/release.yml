@@ -150,7 +150,9 @@ jobs:
     runs-on: ubuntu-latest
 
     # only runs when the schedule or workflow_dispatch is triggered
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    if: |
+      (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    #  && startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -158,30 +160,16 @@ jobs:
       - name: Create Source Code Archive
         run: |
           git archive --format=tgz -o source-code.tar.gz $GITHUB_REF_NAME
-          git archive --format=zip -o source-code.tar.gz $GITHUB_REF_NAME
+          git archive --format=zip -o source-code.zip $GITHUB_REF_NAME
 
       - name: Download Artifacts
         uses: actions/download-artifact@v2
 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This line gets the GITHUB_TOKEN secret
+      - name: Release
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+          files:
+            *-*-*-*.tar.gz
+            code-source.tar.gz
+            code-source.zip
 
-      - name: Upload Release Assets
-        id: upload-release-assets
-        run: |
-          for file in ./package-*/xxx-*-*.tar.gz ./source-code.tar.gz ./source-code.zip; do
-            echo "Uploading $file"
-            curl \
-              --data-binary @"$file" \
-              -H "Content-Type: application/gzip" \
-              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "${{ steps.create_release.outputs.upload_url }}/assets?name=$(basename $file)"
-          done

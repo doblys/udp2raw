@@ -8,9 +8,7 @@ on:
     - cron: '0 0 * * SAT' # This line schedules the job to run at 00:00 every Saturday
   workflow_dispatch:
   push:
-    branches: [ "pkg" ]
   pull_request:
-    branches: [ "pkg" ]
 
 jobs:
   build:
@@ -152,7 +150,7 @@ jobs:
     # only runs when the schedule or workflow_dispatch is triggered
     if: |
       (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
-    #  && startsWith(github.ref, 'refs/tags/')
+      && startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -172,4 +170,3 @@ jobs:
             *-*-*-*.tar.gz
             code-source.tar.gz
             code-source.zip
-

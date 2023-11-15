@@ -159,6 +159,7 @@ jobs:
 
       - name: Create Source Code Archive
         run: |
+          [ -d "$RELEASE_DIR}" ] || mkdir "$RELEASE_DIR"
           git archive --format=tgz -o "${RELEASE_DIR}/source-code.tar.gz" $GITHUB_REF_NAME
           git archive --format=zip -o "${RELEASE_DIR}/source-code.zip" $GITHUB_REF_NAME
 
